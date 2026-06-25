@@ -20,7 +20,7 @@ public class ShoppingCartService
         this.shoppingCartRepository = shoppingCartRepository;
         this.productService = productService;
     }
-
+    @Transactional
     public ShoppingCart getByUserId(int userId)
     {
         // load the user's cart rows, look up each product, and build the ShoppingCart
@@ -28,17 +28,24 @@ public class ShoppingCartService
         List<CartItem> cartItems = shoppingCartRepository.findByUserId(userId);
         for (CartItem cartItem :cartItems) {
             Product product = productService.getById(cartItem.getProductId());
+            //create a shopping cart item to save to the returned shopping cart
             ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
             shoppingCartItem.setProduct(product);
             shoppingCartItem.setQuantity(cartItem.getQuantity());
             shoppingCart.add(shoppingCartItem);
+            //create a new cart item to save to the repository/database
+//            CartItem newCartItem = new CartItem();
+//            newCartItem.setUserId(userId);
+//            newCartItem.setProductId(product.getProductId());
+//            newCartItem.setQuantity(cartItem.getQuantity());
+//            shoppingCartRepository.save(newCartItem);
         }
 
         return shoppingCart;
     }
 
     // add additional methods here
-
+    @Transactional
     public ShoppingCart addToCart(int userId, int productId) {
         CartItem cartItem = shoppingCartRepository.findByUserIdAndProductId(userId, productId);
         if (cartItem == null) {
@@ -60,6 +67,7 @@ public class ShoppingCartService
         shoppingCartRepository.deleteByUserId(userId);
     }
 
+    @Transactional
     public ShoppingCart updateCart(int userId,int productId, int quantity){
         CartItem cartItem = shoppingCartRepository.findByUserIdAndProductId(userId,productId);
         cartItem.setQuantity(quantity);
