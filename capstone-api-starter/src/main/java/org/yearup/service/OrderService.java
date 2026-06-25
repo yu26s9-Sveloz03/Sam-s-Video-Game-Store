@@ -40,6 +40,9 @@ public class OrderService {
         order.setZip(profile.getZip());
         order.setShippingAmount(0.0);
         orderRepository.save(order);
+        if (cartItemList.size() == 0) {
+            return null;
+        }
         for (CartItem cartItem : cartItemList){
             OrderLineItem orderLineItem = new OrderLineItem();
             //order line item id is generated
@@ -49,6 +52,7 @@ public class OrderService {
             orderLineItem.setQuantity(cartItem.getQuantity());
             orderLineItem.setDiscount(0.0);
         }
-        return orderRepository.findByUserId(userId);
+        shoppingCartRepository.deleteAll();
+        return order;
     }
 }

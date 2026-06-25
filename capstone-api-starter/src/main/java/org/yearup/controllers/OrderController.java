@@ -32,6 +32,10 @@ public class OrderController {
         User user = userService.getByUserName(userName);
         int userId = user.getId();
         Order order = orderService.createOrder(userId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(order);
+        if (order != null){
+            return ResponseEntity.status(HttpStatus.CREATED).body(order);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
