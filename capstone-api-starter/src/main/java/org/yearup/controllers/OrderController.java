@@ -17,7 +17,7 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/orders")
 @PreAuthorize("isAuthenticated()")
-@CrossOrigin("https://localhost:63342")
+@CrossOrigin
 public class OrderController {
 
     private OrderService orderService;

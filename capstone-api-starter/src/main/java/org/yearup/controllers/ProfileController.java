@@ -13,7 +13,7 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/profile")
 @PreAuthorize("isAuthenticated()")
-@CrossOrigin("https://localhost:63342")
+@CrossOrigin
 public class ProfileController {
 
     private ProfileService profileService;
